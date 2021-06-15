@@ -1,14 +1,42 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import Counter from './Counter';
+// import {createStore} from 'redux'
+import createStore from './createStore';
+import reducers from './reducers';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+console.log(reducers);
+// const reducer = (state = 0, action) => {
+//   switch(action.type) {
+//     case 'ADD':
+//       return state + 1;
+//     case 'DEC':
+//       return state - 1;
+//     default:
+//       return state;
+//   }
+// }
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+const store = createStore(reducers)
+
+const render = () => {
+  ReactDOM.render(
+    <React.StrictMode>
+      <Counter value={store.getState().counter}
+        onIncrement={() => store.dispatch({type: 'ADD'})}
+        onDecrement={() => store.dispatch({type: 'DEC'})} />
+    </React.StrictMode>,
+    document.getElementById('root')
+  );
+}
+
+const test = () => {
+  console.log('测试')
+}
+
+store.subscribe(render);
+store.subscribe(test);
+
+render();
+
+
