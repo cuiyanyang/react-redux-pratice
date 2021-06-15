@@ -1,41 +1,37 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Counter from './Counter';
-// import {createStore} from 'redux'
-import createStore from './createStore';
-import reducers from './reducers';
+import { createStore } from 'redux'
+import applyMiddleware from './applyMiddleware';
+import { createLogger } from 'redux-logger'
 
-console.log(reducers);
-// const reducer = (state = 0, action) => {
-//   switch(action.type) {
-//     case 'ADD':
-//       return state + 1;
-//     case 'DEC':
-//       return state - 1;
-//     default:
-//       return state;
-//   }
-// }
+const logger = createLogger();
+const reducer = (state = 0, action) => {
+  switch(action.type) {
+    case 'INCREMENT':
+      return state + 1;
+    case 'DECREMENT':
+      return state - 1;
+    default:
+      return state;
+  }
+}
 
-const store = createStore(reducers)
+const store = createStore(reducer, applyMiddleware(logger))
 
 const render = () => {
   ReactDOM.render(
     <React.StrictMode>
-      <Counter value={store.getState().counter}
-        onIncrement={() => store.dispatch({type: 'ADD'})}
-        onDecrement={() => store.dispatch({type: 'DEC'})} />
+      <Counter value={store.getState()}
+        onIncrement={() => store.dispatch({type: 'INCREMENT'})}
+        onDecrement={() => store.dispatch({type: 'DECREMENT'})} />
     </React.StrictMode>,
     document.getElementById('root')
   );
 }
 
-const test = () => {
-  console.log('测试')
-}
 
 store.subscribe(render);
-store.subscribe(test);
 
 render();
 
