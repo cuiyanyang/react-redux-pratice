@@ -18,6 +18,8 @@
 ### 4、createStore
 参数:
 - reducer
+- initState
+- 中间件
 
 ### 5、getState
 - 获取state
